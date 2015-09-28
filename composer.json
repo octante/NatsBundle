@@ -1,0 +1,31 @@
+{
+    "name": "octante/nats-bundle",
+    "type": "symfony-bundle",
+    "description": "A Nats bundle for Symfony2",
+    "keywords": ["nats", "messaging system", "symfony"],
+    "homepage": "https://github.com/octante/OctanteNatsBundle",
+    "license": "MIT",
+    "authors": [{
+        "name": "Issel Guberna",
+        "email": "issel_guberna@hotmail.com"
+    }],
+    "require": {
+        "php": ">=5.4.0",
+        "repejota/nats": "^0.0.7",
+        "symfony/framework-bundle": "^2.7",
+        "symfony/yaml": "^2.7",
+        "symfony/console": "^2.7"
+    },
+    "require-dev": {
+        "fabpot/php-cs-fixer": "^1.10",
+        "phpunit/phpunit": "^4.8"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-4": {
+            "Octante\\NatsBundle": ""
+        }
+    }
+}
