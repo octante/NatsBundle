@@ -30,6 +30,8 @@ class ConnectionFactory
      */
     public function createConnection($connectionName = null)
     {
+        $connectionName = ($connectionName === null) ? 'default_connection' : $connectionName;
+
         if (!isset($this->configuration['connections'][$connectionName])) {
             throw new ConnectionNameNotFound();
         }

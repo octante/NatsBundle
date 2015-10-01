@@ -51,4 +51,32 @@ class ConnectionFactoryTest extends PHPUnit_Framework_TestCase
         $sut = new ConnectionFactory($conf);
         $sut->createConnection('test_connection');
     }
+
+    /**
+     * method: createConnection
+     * when: calledWithoutAConfigurationKey
+     * will:  setADefaultConnectionKey
+     */
+    public function test_createConnection_calledWithoutAConfigurationKey_setADefaultConnectionKey()
+    {
+        $conf = array(
+            'connections' => array(
+                'default_connection' => array(
+                    'host' => 'localhost',
+                    'port' => 4222,
+                    'user' => 'user',
+                    'password' => 'password',
+                    'verbose' => true,
+                    'reconnect' => true,
+                    'version' => '0.0.5',
+                    'pedantic' => true,
+                    'lang' => 'php'
+                )
+            )
+        );
+
+        $sut = new ConnectionFactory($conf);
+        $connection = $sut->createConnection();
+        $this->assertInstanceOf('Nats\Connection', $connection);
+    }
 }

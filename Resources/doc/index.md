@@ -33,29 +33,48 @@ Configure the `nats` client(s) in your `config.yml`:
 
 ``` yaml
 octante_nats:
-    host: localhost
-    port: 4222
-    user: user
-    password: password
-    verbose: false
-    reconnect: true
-    version: 0.0.5
-    pedantic: false
-    lang: php
+    connections:
+        default_connection:
+            host: localhost
+            port: 4222
+            user:
+            password:
+            verbose: false
+            reconnect: true
+            version: 0.0.5
+            pedantic: false
+            lang: php
+        connection2:
+            host: localhost
+            port: 4223
+            user:
+            password:
+            verbose: false
+            reconnect: true
+            version: 0.0.5
+            pedantic: false
+            lang: php
 ```
 
 You can now access nats client. In case of a publisher:
 
 ``` php
 <?php
-$connection = $this->getContainer()->get('octante_nats.connection');
+$connection = $this
+            ->getContainer()
+            ->get('octante_nats.connection_factory')
+            ->createConnection('default_connection');
+
 $connection->publish("foo", "bar");
 ```
 
 In case of a subscriber:
 ``` php
 <?php
-$connection = $this->getContainer()->get('octante_nats.connection');
+$connection = $this
+            ->getContainer()
+            ->get('octante_nats.connection_factory')
+            ->createConnection('default_connection');
 
 $callback = function ($payload) {
     var_dump($payload);
