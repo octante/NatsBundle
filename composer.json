@@ -20,9 +20,6 @@
         "fabpot/php-cs-fixer": "^1.10",
         "phpunit/phpunit": "^4.8"
     },
-    "config": {
-        "bin-dir": "bin"
-    },
     "autoload": {
         "psr-4": {
             "Octante\\NatsBundle\\": ""
