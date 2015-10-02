@@ -7,13 +7,13 @@ class ConnectionFactoryTest extends PHPUnit_Framework_TestCase
     /**
      * method: createConnection
      * when: calledWithAValidConfigurationKey
-     * will:  returnAValidConnection
+     * will:  returnAValidConnection.
      */
     public function test_createConnection_calledWithAValidConfigurationKey_returnAValidConnection()
     {
-        $conf = array(
-            'connections' => array(
-                'test_connection' => array(
+        $conf = [
+            'connections' => [
+                'test_connection' => [
                     'host' => 'localhost',
                     'port' => 4222,
                     'user' => 'user',
@@ -22,10 +22,10 @@ class ConnectionFactoryTest extends PHPUnit_Framework_TestCase
                     'reconnect' => true,
                     'version' => '0.0.5',
                     'pedantic' => true,
-                    'lang' => 'php'
-                )
-            )
-        );
+                    'lang' => 'php',
+                ],
+            ],
+        ];
 
         $sut = new ConnectionFactory($conf);
         $connection = $sut->createConnection('test_connection');
@@ -35,18 +35,18 @@ class ConnectionFactoryTest extends PHPUnit_Framework_TestCase
     /**
      * method: createConnection
      * when: calledWithAnInvalidConfigurationKey
-     * will:  throwAnException
+     * will:  throwAnException.
      *
      * @expectedException Octante\NatsBundle\Exceptions\ConnectionNameNotFound
      */
     public function test_createConnection_calledWithAnInvalidConfigurationKey_throwAnException()
     {
-        $conf = array(
-            'connections' => array(
-                'dummy_connection' => array(
-                )
-            )
-        );
+        $conf = [
+            'connections' => [
+                'dummy_connection' => [
+                ],
+            ],
+        ];
 
         $sut = new ConnectionFactory($conf);
         $sut->createConnection('test_connection');
@@ -55,13 +55,13 @@ class ConnectionFactoryTest extends PHPUnit_Framework_TestCase
     /**
      * method: createConnection
      * when: calledWithoutAConfigurationKey
-     * will:  setADefaultConnectionKey
+     * will:  setADefaultConnectionKey.
      */
     public function test_createConnection_calledWithoutAConfigurationKey_setADefaultConnectionKey()
     {
-        $conf = array(
-            'connections' => array(
-                'default_connection' => array(
+        $conf = [
+            'connections' => [
+                'default_connection' => [
                     'host' => 'localhost',
                     'port' => 4222,
                     'user' => 'user',
@@ -70,10 +70,10 @@ class ConnectionFactoryTest extends PHPUnit_Framework_TestCase
                     'reconnect' => true,
                     'version' => '0.0.5',
                     'pedantic' => true,
-                    'lang' => 'php'
-                )
-            )
-        );
+                    'lang' => 'php',
+                ],
+            ],
+        ];
 
         $sut = new ConnectionFactory($conf);
         $connection = $sut->createConnection();
