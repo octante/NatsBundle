@@ -17,3 +17,4 @@ This bundle integrates [Nats](https://nats.io) into your Symfony2 application.
 ## License ##
 
 See [LICENSE](https://github.com/octante/NatsBundle/blob/master/LICENSE).
+
