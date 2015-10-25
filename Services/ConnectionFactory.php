@@ -22,23 +22,52 @@ class ConnectionFactory
     }
 
     /**
+     * @return Connection
+     *
+     * @throws ConnectionNameNotFound
+     */
+    public function createDefaultConnection()
+    {
+        if (!isset($this->configuration['default_connection'])) {
+            throw new ConnectionNameNotFound();
+        }
+
+        return new Connection(
+            $this->getConnectionOptions(
+                $this->configuration['default_connection']
+            )
+        );
+    }
+
+    /**
      * @param string $connectionName
      *
      * @return Connection
      *
      * @throws ConnectionNameNotFound
      */
-    public function createConnection($connectionName = null)
+    public function createConnection($connectionName)
     {
-        $connectionName = ($connectionName === null) ? 'default_connection' : $connectionName;
-
-        if (!isset($this->configuration['connections'][$connectionName])) {
+        if (!isset($this->configuration[$connectionName])) {
             throw new ConnectionNameNotFound();
         }
 
-        $config = $this->configuration['connections'][$connectionName];
+        $config = $this->configuration[$connectionName];
 
-        // Connection options instance
+        return new Connection(
+            $this->getConnectionOptions($config)
+        );
+    }
+
+    /**
+     * Return a ConnectionOptions instance getting parameters from config.
+     *
+     * @param $config
+     *
+     * @return ConnectionOptions
+     */
+    private function getConnectionOptions($config)
+    {
         $connectionOptions = new ConnectionOptions();
         $connectionOptions->setHost($config['host'])
             ->setPort($config['port'])
@@ -50,6 +79,6 @@ class ConnectionFactory
             ->setPedantic($config['pedantic'])
             ->setLang($config['lang']);
 
-        return new Connection($connectionOptions);
+        return $connectionOptions;
     }
 }

@@ -20,7 +20,16 @@ class OctanteNatsExtension extends Extension
         $config = $processor->processConfiguration($configuration, $configs);
 
         // Connection instance
-        $connectionFactoryDefinition = new Definition('Octante\\NatsBundle\\Services\\ConnectionFactory', [$config]);
-        $container->setDefinition('octante_nats.connection_factory', $connectionFactoryDefinition);
+        $connectionFactoryDefinition = new Definition(
+            'Octante\\NatsBundle\\Services\\ConnectionFactory',
+            [
+                $config['connections'],
+            ]
+        );
+
+        $container->setDefinition(
+            'octante_nats.connection_factory',
+            $connectionFactoryDefinition
+        );
     }
 }

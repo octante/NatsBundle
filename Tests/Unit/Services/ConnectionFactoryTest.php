@@ -12,18 +12,16 @@ class ConnectionFactoryTest extends PHPUnit_Framework_TestCase
     public function test_createConnection_calledWithAValidConfigurationKey_returnAValidConnection()
     {
         $conf = [
-            'connections' => [
-                'test_connection' => [
-                    'host' => 'localhost',
-                    'port' => 4222,
-                    'user' => 'user',
-                    'password' => 'password',
-                    'verbose' => true,
-                    'reconnect' => true,
-                    'version' => '0.0.5',
-                    'pedantic' => true,
-                    'lang' => 'php',
-                ],
+            'test_connection' => [
+                'host' => 'localhost',
+                'port' => 4222,
+                'user' => 'user',
+                'password' => 'password',
+                'verbose' => true,
+                'reconnect' => true,
+                'version' => '0.0.5',
+                'pedantic' => true,
+                'lang' => 'php',
             ],
         ];
 
@@ -42,9 +40,7 @@ class ConnectionFactoryTest extends PHPUnit_Framework_TestCase
     public function test_createConnection_calledWithAnInvalidConfigurationKey_throwAnException()
     {
         $conf = [
-            'connections' => [
-                'dummy_connection' => [
-                ],
+            'dummy_connection' => [
             ],
         ];
 
@@ -53,30 +49,28 @@ class ConnectionFactoryTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * method: createConnection
-     * when: calledWithoutAConfigurationKey
+     * method: createDefaultConnection
+     * when: called
      * will:  setADefaultConnectionKey.
      */
-    public function test_createConnection_calledWithoutAConfigurationKey_setADefaultConnectionKey()
+    public function test_createDefaultConnection_called_setADefaultConnectionKey()
     {
         $conf = [
-            'connections' => [
-                'default_connection' => [
-                    'host' => 'localhost',
-                    'port' => 4222,
-                    'user' => 'user',
-                    'password' => 'password',
-                    'verbose' => true,
-                    'reconnect' => true,
-                    'version' => '0.0.5',
-                    'pedantic' => true,
-                    'lang' => 'php',
-                ],
+            'default_connection' => [
+                'host' => 'localhost',
+                'port' => 4222,
+                'user' => 'user',
+                'password' => 'password',
+                'verbose' => true,
+                'reconnect' => true,
+                'version' => '0.0.5',
+                'pedantic' => true,
+                'lang' => 'php',
             ],
         ];
 
         $sut = new ConnectionFactory($conf);
-        $connection = $sut->createConnection();
+        $connection = $sut->createDefaultConnection();
         $this->assertInstanceOf('Nats\Connection', $connection);
     }
 }
