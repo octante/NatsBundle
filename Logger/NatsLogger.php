@@ -1,0 +1,84 @@
+<?php
+/*
+ * This file is part of the NatsBundle package.
+ *
+ * (c) Issel Guberna <issel.guberna@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Octante\NatsBundle\Logger;
+
+use Psr\Log\LoggerInterface;
+
+/**
+ * NatsLogger
+ */
+class NatsLogger
+{
+    protected $logger;
+    protected $nbCommands = 0;
+    protected $commands = array();
+    protected $start;
+
+    /**
+     * Constructor.
+     *
+     * @param LoggerInterface $logger A LoggerInterface instance
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function __construct($logger = null)
+    {
+        $this->logger = $logger;
+    }
+
+    /**
+     * Logs a command
+     *
+     * @param string      $command    Nats command
+     * @param float       $duration   Duration in milliseconds
+     * @param string      $connection Connection alias
+     * @param bool|string $error      Error message or false if command was successful
+     */
+    public function logCommand($command, $duration, $connection, $error = false)
+    {
+        ++$this->nbCommands;
+
+        if (null !== $this->logger) {
+            $this->commands[] = array(
+                'cmd'         => $command,
+                'executionMS' => $duration,
+                'connection'  => $connection,
+                'error'       => $error
+            );
+
+            if ($error) {
+                $this->logger->error('Executing "' . $command . '" failed (' . $error . ')');
+            } else {
+                $this->logger->info('Executing "' . $command . '"');
+            }
+        }
+    }
+
+    /**
+     * Returns the number of logged commands.
+     *
+     * @return integer
+     */
+    public function getNbCommands()
+    {
+        return $this->nbCommands;
+    }
+
+    /**
+     * Returns an array of the logged commands.
+     *
+     * @return array
+     */
+    public function getCommands()
+    {
+        return $this->commands;
+    }
+}

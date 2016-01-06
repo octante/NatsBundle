@@ -1,9 +1,19 @@
 <?php
 
+/*
+ * This file is part of the NatsBundle package.
+ *
+ * (c) Issel Guberna <issel.guberna@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Octante\NatsBundle\Services;
 
 use Nats\Connection;
 use Nats\ConnectionOptions;
+use Octante\NatsBundle\Connection\ConnectionWrapper;
 use Octante\NatsBundle\Exceptions\ConnectionNameNotFound;
 
 class ConnectionFactory
@@ -14,11 +24,17 @@ class ConnectionFactory
     private $configuration;
 
     /**
+     * @var
+     */
+    private $logger;
+
+    /**
      * @param array $configuration
      */
-    public function __construct($configuration)
+    public function __construct($configuration, $logger)
     {
         $this->configuration = $configuration;
+        $this->logger = $logger;
     }
 
     /**
@@ -42,9 +58,9 @@ class ConnectionFactory
     /**
      * @param string $connectionName
      *
-     * @return Connection
+     * @throws \Octante\NatsBundle\Exceptions\ConnectionNameNotFound
      *
-     * @throws ConnectionNameNotFound
+     * @return Connection
      */
     public function createConnection($connectionName)
     {
@@ -54,8 +70,9 @@ class ConnectionFactory
 
         $config = $this->configuration[$connectionName];
 
-        return new Connection(
-            $this->getConnectionOptions($config)
+        return new ConnectionWrapper(
+            new Connection($this->getConnectionOptions($config)),
+            $this->logger
         );
     }
 

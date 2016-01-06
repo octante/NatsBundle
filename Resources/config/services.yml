@@ -1,0 +1,13 @@
+services:
+    nats.logger:
+        class: Octante\NatsBundle\Logger\NatsLogger
+        arguments: ['@logger']
+        tags:
+            - { name: monolog.logger, channel: nats }
+
+    nats.data_collector:
+        class: Octante\NatsBundle\DataCollector\NatsDataCollector
+        public: false
+        arguments: ['@nats.logger']
+        tags:
+            - { name: data_collector, template: OctanteNatsBundle:Collector:nats, id: nats }

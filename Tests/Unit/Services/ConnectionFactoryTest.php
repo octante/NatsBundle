@@ -1,8 +1,19 @@
 <?php
 
+/*
+ * This file is part of the NatsBundle package.
+ *
+ * (c) Issel Guberna <issel.guberna@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Octante\NatsBundle\Tests\Unit\Connection;
+
 use Octante\NatsBundle\Services\ConnectionFactory;
 
-class ConnectionFactoryTest extends PHPUnit_Framework_TestCase
+class ConnectionFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * method: createConnection
@@ -25,9 +36,11 @@ class ConnectionFactoryTest extends PHPUnit_Framework_TestCase
             ],
         ];
 
-        $sut = new ConnectionFactory($conf);
+        $logMock = $this->getMock('Octante\NatsBundle\Logger\NatsLogger');
+
+        $sut = new ConnectionFactory($conf, $logMock);
         $connection = $sut->createConnection('test_connection');
-        $this->assertInstanceOf('Nats\Connection', $connection);
+        $this->assertInstanceOf('Octante\NatsBundle\Connection\ConnectionWrapper', $connection);
     }
 
     /**
@@ -35,7 +48,7 @@ class ConnectionFactoryTest extends PHPUnit_Framework_TestCase
      * when: calledWithAnInvalidConfigurationKey
      * will:  throwAnException.
      *
-     * @expectedException Octante\NatsBundle\Exceptions\ConnectionNameNotFound
+     * @expectedException \Octante\NatsBundle\Exceptions\ConnectionNameNotFound
      */
     public function test_createConnection_calledWithAnInvalidConfigurationKey_throwAnException()
     {
@@ -44,7 +57,8 @@ class ConnectionFactoryTest extends PHPUnit_Framework_TestCase
             ],
         ];
 
-        $sut = new ConnectionFactory($conf);
+        $logMock = $this->getMock('Octante\NatsBundle\Logger\NatsLogger');
+        $sut = new ConnectionFactory($conf, $logMock);
         $sut->createConnection('test_connection');
     }
 
@@ -69,7 +83,8 @@ class ConnectionFactoryTest extends PHPUnit_Framework_TestCase
             ],
         ];
 
-        $sut = new ConnectionFactory($conf);
+        $logMock = $this->getMock('Octante\NatsBundle\Logger\NatsLogger');
+        $sut = new ConnectionFactory($conf, $logMock);
         $connection = $sut->createDefaultConnection();
         $this->assertInstanceOf('Nats\Connection', $connection);
     }
